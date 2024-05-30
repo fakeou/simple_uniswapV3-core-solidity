@@ -31,6 +31,7 @@ contract UniswapV3PoolDeployer is IUniswapV3PoolDeployer {
         uint24 fee,
         int24 tickSpacing
     ) internal returns (address pool) {
+        // 构建参数 给 Pool合约初始化
         parameters = Parameters({
             factory: factory,
             token0: token0,
@@ -38,8 +39,12 @@ contract UniswapV3PoolDeployer is IUniswapV3PoolDeployer {
             fee: fee,
             tickSpacing: tickSpacing
         });
-
-        pool = address(new UniswapV3Pool{salt: keccak256(abi.encode(token0, token1, fee))}())
+        // 在部署时子合约可以访问上下文？ 所以pool能够访问上下文的方式初始化构造函数
+        pool = address(
+            new UniswapV3Pool{
+                salt: keccak256(abi.encode(token0, token1, fee))
+            }()
+        );
         delete parameters;
     }
 }
