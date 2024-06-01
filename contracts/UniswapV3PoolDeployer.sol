@@ -39,7 +39,7 @@ contract UniswapV3PoolDeployer is IUniswapV3PoolDeployer {
             fee: fee,
             tickSpacing: tickSpacing
         });
-        // 在部署时子合约可以访问上下文？ 所以pool能够访问上下文的方式初始化构造函数
+        // 在部署时,被部署的合约可以访问上下文？ 所以pool能够访问上下文parameters变量作为参数执行构造函数
         pool = address(
             new UniswapV3Pool{
                 salt: keccak256(abi.encode(token0, token1, fee))
